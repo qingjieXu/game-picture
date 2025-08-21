@@ -2,6 +2,10 @@ server:
   port: 8123
   servlet:
     context-path: /api
+    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 2592000
 spring:
   application:
     name: game-picture-backend
@@ -11,6 +15,20 @@ spring:
     url: jdbc:mysql://localhost:3306/game_picture
     username: root
     password: 123456
+  profiles:
+    active: local
+  # Redis 配置
+  redis:
+    database: 2
+    host: localhost
+    port: 6379
+    timeout: 5000
+    password: 123456
+  # session 配置
+  session:
+    store-type: redis
+    # session 30 天过期
+    timeout: 2592000
 
 mybatis-plus:
   configuration:
@@ -34,7 +52,3 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.xuqj.gamepicturebackend.controller
-
-
-
-
