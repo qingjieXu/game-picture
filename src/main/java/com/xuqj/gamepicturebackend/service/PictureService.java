@@ -3,6 +3,7 @@ package com.xuqj.gamepicturebackend.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xuqj.gamepicturebackend.api.aliyunai.model.CreateOutPaintingTaskResponse;
 import com.xuqj.gamepicturebackend.model.dto.picture.*;
 import com.xuqj.gamepicturebackend.model.entity.Picture;
 import com.xuqj.gamepicturebackend.model.entity.User;
@@ -75,4 +76,6 @@ public interface PictureService extends IService<Picture> {
     List<PictureVO> searchPictureByColor(Long spaceId, String picColor, User loginUser);
 
     void editPictureByBatch(PictureEditByBatchRequest pictureEditByBatchRequest, User loginUser);
+
+    CreateOutPaintingTaskResponse createPictureOutPaintingTask(CreatePictureOutPaintingTaskRequest createPictureOutPaintingTaskRequest, User loginUser);
 }
