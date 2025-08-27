@@ -36,6 +36,7 @@ import static com.xuqj.gamepicturebackend.constant.UserConstant.USER_LOGIN_STATE
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService {
+
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
         // 1. 校验

@@ -57,9 +57,12 @@ public class PictureController {
     private SpaceService spaceService;
     @Resource
     private AliYunAiApi aliYunAiApi;
-    @Autowired
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    /**
+     * 本地缓存
+     */
     private final Cache<String, String> LOCAL_CACHE =
             Caffeine.newBuilder().initialCapacity(1024)
                     .maximumSize(10000L)
@@ -192,6 +195,8 @@ public class PictureController {
                                                              HttpServletRequest request) {
         long current = pictureQueryRequest.getCurrent();
         long size = pictureQueryRequest.getPageSize();
+        // 限制爬虫
+        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
         // 空间权限校验
         Long spaceId = pictureQueryRequest.getSpaceId();
         // 公开图库
@@ -208,8 +213,6 @@ public class PictureController {
                 throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "没有空间权限");
             }
         }
-        // 限制爬虫
-        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
         // 查询数据库
         Page<Picture> picturePage = pictureService.page(new Page<>(current, size),
                 pictureService.getQueryWrapper(pictureQueryRequest));
@@ -217,6 +220,12 @@ public class PictureController {
         return ResultUtils.success(pictureService.getPictureVOPage(picturePage, request));
     }
 
+    /**
+     * 分页获取图片列表（有缓存）
+     * @param pictureQueryRequest
+     * @param request
+     * @return
+     */
     @PostMapping("/list/page/vo/cache")
     public BaseResponse<Page<PictureVO>> listPictureVOByPageWithCache(@RequestBody PictureQueryRequest pictureQueryRequest,
                                                                       HttpServletRequest request) {
@@ -306,10 +315,11 @@ public class PictureController {
 
         // 4. 更新缓存
         String cacheValue = JSONUtil.toJsonStr(pictureVOPage);
+        // 设置缓存的过期时间，5 - 10 分钟过期，防止缓存雪崩
+        int cacheExpireTime = 300 + RandomUtil.randomInt(0, 300);
+        valueOps.set(cacheKey, cacheValue, cacheExpireTime, TimeUnit.SECONDS);
         // 更新本地缓存
         LOCAL_CACHE.put(cacheKey, cacheValue);
-        // 更新 Redis 缓存，设置过期时间为 5 分钟
-        valueOps.set(cacheKey, cacheValue, 5, TimeUnit.MINUTES);
 
         // 返回结果
         return ResultUtils.success(pictureVOPage);
@@ -328,6 +338,10 @@ public class PictureController {
         return ResultUtils.success(true);
     }
 
+    /**
+     * 图片标签
+     * @return
+     */
     @GetMapping("/tag_category")
     public BaseResponse<PictureTagCategory> listPictureTagCategory() {
         PictureTagCategory pictureTagCategory = new PictureTagCategory();
@@ -338,6 +352,12 @@ public class PictureController {
         return ResultUtils.success(pictureTagCategory);
     }
 
+    /**
+     * 审核图片
+     * @param pictureReviewRequest
+     * @param request
+     * @return
+     */
     @PostMapping("/review")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> doPictureReview(@RequestBody PictureReviewRequest pictureReviewRequest,
@@ -348,6 +368,12 @@ public class PictureController {
         return ResultUtils.success(true);
     }
 
+    /**
+     * 批量抓取并创建图片
+     * @param pictureUploadByBatchRequest
+     * @param request
+     * @return
+     */
     @PostMapping("/upload/batch")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Integer> uploadPictureByBatch(
@@ -374,6 +400,12 @@ public class PictureController {
         return ResultUtils.success(resultList);
     }
 
+    /**
+     * 以颜色搜图
+     * @param searchPictureByColorRequest
+     * @param request
+     * @return
+     */
     @PostMapping("/search/color")
     public BaseResponse<List<PictureVO>> searchPictureByColor(@RequestBody SearchPictureByColorRequest searchPictureByColorRequest, HttpServletRequest request) {
         ThrowUtils.throwIf(searchPictureByColorRequest == null, ErrorCode.PARAMS_ERROR);
@@ -384,6 +416,12 @@ public class PictureController {
         return ResultUtils.success(result);
     }
 
+    /**
+     * 批量编辑图片
+     * @param pictureEditByBatchRequest
+     * @param request
+     * @return
+     */
     @PostMapping("/edit/batch")
     public BaseResponse<Boolean> editPictureByBatch(@RequestBody PictureEditByBatchRequest pictureEditByBatchRequest, HttpServletRequest request) {
         ThrowUtils.throwIf(pictureEditByBatchRequest == null, ErrorCode.PARAMS_ERROR);

@@ -59,12 +59,32 @@ public interface UserService extends IService<User> {
      */
     boolean userLogout(HttpServletRequest request);
 
+    /**
+     * 查看脱敏后的用户信息
+     * @param user
+     * @return
+     */
     UserVO getUserVO(User user);
 
+    /**
+     * 获取脱敏后的用户信息列表
+     * @param userList
+     * @return
+     */
     List<UserVO> getUserVOList(List<User> userList);
 
+    /**
+     * 获得查询条件
+     * @param userQueryRequest
+     * @return
+     */
     QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
 
+    /**
+     * 获取加密后的密码
+     * @param defaultPassword
+     * @return
+     */
     String getEncryptPassword(String defaultPassword);
 
     /**

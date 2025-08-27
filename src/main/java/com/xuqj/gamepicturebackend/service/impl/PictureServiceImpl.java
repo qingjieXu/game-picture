@@ -31,6 +31,7 @@ import com.xuqj.gamepicturebackend.service.SpaceService;
 import com.xuqj.gamepicturebackend.service.UserService;
 import com.xuqj.gamepicturebackend.utils.ColorSimilarUtils;
 import com.xuqj.gamepicturebackend.api.aliyunai.AliYunAiApi;
+import com.xuqj.gamepicturebackend.utils.ColorTransformUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -157,7 +158,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         picture.setPicScale(uploadPictureResult.getPicScale());
         picture.setPicFormat(uploadPictureResult.getPicFormat());
         picture.setUserId(loginUser.getId());
-        picture.setPicColor(uploadPictureResult.getPicColor());
+        picture.setPicColor(ColorTransformUtils.getStandardColor(uploadPictureResult.getPicColor()));
         //补充审核参数
         fillReviewParams(picture, loginUser);
         // 如果 pictureId 不为空，表示更新，否则是新增
@@ -311,9 +312,12 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
 
     @Override
     public void doPictureReview(PictureReviewRequest pictureReviewRequest, User loginUser) {
+        // 1. 校验参数
+        ThrowUtils.throwIf(pictureReviewRequest == null, ErrorCode.PARAMS_ERROR);
         Long id = pictureReviewRequest.getId();
         Integer reviewStatus = pictureReviewRequest.getReviewStatus();
         PictureReviewStatusEnum reviewStatusEnum = PictureReviewStatusEnum.getEnumByValue(reviewStatus);
+        String reviewMessage = pictureReviewRequest.getReviewMessage();
         if (id == null || reviewStatusEnum == null || PictureReviewStatusEnum.REVIEWING.equals(reviewStatusEnum)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -353,6 +357,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         // 格式化数量
         Integer count = pictureUploadByBatchRequest.getCount();
         ThrowUtils.throwIf(count > 30, ErrorCode.PARAMS_ERROR, "最多 30 条");
+        String namePrefix = pictureUploadByBatchRequest.getNamePrefix();
         // 要抓取的地址
         String fetchUrl = String.format("https://cn.bing.com/images/async?q=%s&mmasync=1", searchText);
         Document document;
@@ -369,10 +374,6 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         Elements imgElementList = div.select("img.mimg");
         int uploadCount = 0;
         for (Element imgElement : imgElementList) {
-            String namePrefix = pictureUploadByBatchRequest.getNamePrefix();
-            if(StrUtil.isBlank(namePrefix)){
-                namePrefix = searchText;
-            }
             String fileUrl = imgElement.attr("src");
             if (StrUtil.isBlank(fileUrl)) {
                 log.info("当前链接为空，已跳过: {}", fileUrl);
@@ -385,9 +386,8 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             }
             // 上传图片
             PictureUploadRequest pictureUploadRequest = new PictureUploadRequest();
-            if(StrUtil.isNotBlank(namePrefix)){
-                pictureUploadRequest.setPicName(namePrefix + (uploadCount + 1));
-            }
+            pictureUploadRequest.setFileUrl(fileUrl);
+            pictureUploadRequest.setPicName(namePrefix + (uploadCount + 1));
             try {
                 PictureVO pictureVO = this.uploadPicture(fileUrl, pictureUploadRequest, loginUser);
                 log.info("图片上传成功, id = {}", pictureVO.getId());
@@ -417,7 +417,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             return;
         }
         // FIXME 注意，这里的 url 包含了域名，实际上只要传 key 值（存储路径）就够了
-        cosManager.deleteObject(oldPicture.getUrl());
+        cosManager.deleteObject(pictureUrl);
         // 清理缩略图
         String thumbnailUrl = oldPicture.getThumbnailUrl();
         if (StrUtil.isNotBlank(thumbnailUrl)) {
@@ -618,7 +618,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         CreateOutPaintingTaskRequest.Input input = new CreateOutPaintingTaskRequest.Input();
         input.setImageUrl(picture.getUrl());
         taskRequest.setInput(input);
-        BeanUtil.copyProperties(createPictureOutPaintingTaskRequest, taskRequest);
+        taskRequest.setParameters(createPictureOutPaintingTaskRequest.getParameters());
         // 创建任务
         return aliYunAiApi.createOutPaintingTask(taskRequest);
     }
