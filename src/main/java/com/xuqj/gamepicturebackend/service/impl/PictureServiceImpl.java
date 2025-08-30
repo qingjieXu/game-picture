@@ -32,6 +32,8 @@ import com.xuqj.gamepicturebackend.service.UserService;
 import com.xuqj.gamepicturebackend.utils.ColorSimilarUtils;
 import com.xuqj.gamepicturebackend.api.aliyunai.AliYunAiApi;
 import com.xuqj.gamepicturebackend.utils.ColorTransformUtils;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,8 +44,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.io.IOException;
 import java.util.*;

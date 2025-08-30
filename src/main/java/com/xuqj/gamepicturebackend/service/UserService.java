@@ -6,8 +6,8 @@ import com.xuqj.gamepicturebackend.model.dto.user.UserQueryRequest;
 import com.xuqj.gamepicturebackend.model.entity.User;
 import com.xuqj.gamepicturebackend.model.vo.LoginUserVO;
 import com.xuqj.gamepicturebackend.model.vo.UserVO;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**

@@ -19,12 +19,12 @@ import com.xuqj.gamepicturebackend.model.vo.UserVO;
 import com.xuqj.gamepicturebackend.service.SpaceService;
 import com.xuqj.gamepicturebackend.mapper.SpaceMapper;
 import com.xuqj.gamepicturebackend.service.UserService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

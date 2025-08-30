@@ -14,12 +14,11 @@ import com.xuqj.gamepicturebackend.model.vo.UserVO;
 import com.xuqj.gamepicturebackend.service.UserService;
 import com.xuqj.gamepicturebackend.model.entity.User;
 import com.xuqj.gamepicturebackend.mapper.UserMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-
-import javax.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.List;

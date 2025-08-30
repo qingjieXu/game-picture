@@ -18,10 +18,10 @@ import com.xuqj.gamepicturebackend.service.PictureService;
 import com.xuqj.gamepicturebackend.service.SpaceAnalyzeService;
 import com.xuqj.gamepicturebackend.service.SpaceService;
 import com.xuqj.gamepicturebackend.service.UserService;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.xuqj.gamepicturebackend.model.entity.User;
 
-import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

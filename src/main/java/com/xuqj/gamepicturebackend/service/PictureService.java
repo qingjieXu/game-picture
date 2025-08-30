@@ -8,12 +8,12 @@ import com.xuqj.gamepicturebackend.model.dto.picture.*;
 import com.xuqj.gamepicturebackend.model.entity.Picture;
 import com.xuqj.gamepicturebackend.model.entity.User;
 import com.xuqj.gamepicturebackend.model.vo.PictureVO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.xuqj.gamepicturebackend.model.dto.picture.PictureEditByBatchRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**

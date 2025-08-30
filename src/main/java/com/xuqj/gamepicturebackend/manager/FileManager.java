@@ -16,11 +16,11 @@ import com.xuqj.gamepicturebackend.exception.BusinessException;
 import com.xuqj.gamepicturebackend.exception.ErrorCode;
 import com.xuqj.gamepicturebackend.exception.ThrowUtils;
 import com.xuqj.gamepicturebackend.model.dto.file.UploadPictureResult;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;

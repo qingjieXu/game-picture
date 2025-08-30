@@ -8,8 +8,7 @@ import com.xuqj.gamepicturebackend.model.entity.Space;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xuqj.gamepicturebackend.model.entity.User;
 import com.xuqj.gamepicturebackend.model.vo.SpaceVO;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
 * @author 11394

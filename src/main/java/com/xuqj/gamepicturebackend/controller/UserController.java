@@ -14,11 +14,11 @@ import com.xuqj.gamepicturebackend.request.DeleteRequest;
 import com.xuqj.gamepicturebackend.response.BaseResponse;
 import com.xuqj.gamepicturebackend.response.ResultUtils;
 import com.xuqj.gamepicturebackend.service.UserService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController

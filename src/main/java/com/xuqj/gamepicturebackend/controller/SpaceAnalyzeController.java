@@ -10,13 +10,13 @@ import com.xuqj.gamepicturebackend.response.BaseResponse;
 import com.xuqj.gamepicturebackend.response.ResultUtils;
 import com.xuqj.gamepicturebackend.service.SpaceAnalyzeService;
 import com.xuqj.gamepicturebackend.service.UserService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController

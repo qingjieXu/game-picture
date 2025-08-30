@@ -4,10 +4,12 @@ import com.xuqj.gamepicturebackend.exception.BusinessException;
 import com.xuqj.gamepicturebackend.exception.ErrorCode;
 import com.xuqj.gamepicturebackend.response.BaseResponse;
 import com.xuqj.gamepicturebackend.response.ResultUtils;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Hidden
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {

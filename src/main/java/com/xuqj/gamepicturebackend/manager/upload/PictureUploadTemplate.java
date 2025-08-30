@@ -14,9 +14,9 @@ import com.xuqj.gamepicturebackend.exception.BusinessException;
 import com.xuqj.gamepicturebackend.exception.ErrorCode;
 import com.xuqj.gamepicturebackend.manager.CosManager;
 import com.xuqj.gamepicturebackend.model.dto.file.UploadPictureResult;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.util.Date;
 import java.util.List;

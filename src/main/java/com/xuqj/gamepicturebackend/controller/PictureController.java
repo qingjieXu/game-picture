@@ -29,6 +29,8 @@ import com.xuqj.gamepicturebackend.response.ResultUtils;
 import com.xuqj.gamepicturebackend.service.PictureService;
 import com.xuqj.gamepicturebackend.service.SpaceService;
 import com.xuqj.gamepicturebackend.service.UserService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,6 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
