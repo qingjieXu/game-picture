@@ -34,3 +34,5 @@ build/
 
 ### Custom ###
 application-local.yml
+/tmp/
+/chat-memory/

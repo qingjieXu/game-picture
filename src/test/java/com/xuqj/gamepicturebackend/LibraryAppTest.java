@@ -49,5 +49,31 @@ class LibraryAppTest {
         Assertions.assertNotNull(answer);
     }
 
+    @Test
+    void doChatWithTools() {
+        // 测试联网搜索问题的答案
+        testMessage("请为我推荐一些制作壁纸，下载壁纸的网站？");
+
+        String url = String.format("https://cn.bing.com/images/async?q=%s&mmasync=1", "高清壁纸");
+
+        // 测试网页抓取：恋爱案例分析
+        testMessage("请在" + url + "中为我挑一些图片？");
+
+        // 测试资源下载：图片下载
+        testMessage("直接下载一张高清壁纸图片为文件");
+
+        // 测试终端操作：执行代码
+        testMessage("执行 Python3 脚本来生成数据分析报告");
+
+        // 测试文件操作：保存用户档案
+        testMessage("保存'我的项目快完结了'这句话到文本中");
+    }
+
+    private void testMessage(String message) {
+        String chatId = UUID.randomUUID().toString();
+        String answer = libraryApp.doChatWithTools(message, chatId);
+        Assertions.assertNotNull(answer);
+    }
+
 }
 
