@@ -37,3 +37,4 @@ application-local.yml
 /tmp/
 /chat-memory/
 /src/main/resources/mcp-servers.json
+/search-mcp-server/src/main/java/com/xuqj/searchmcpserver/tools/ImageSearchTool.java
