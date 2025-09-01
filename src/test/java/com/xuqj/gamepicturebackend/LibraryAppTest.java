@@ -75,5 +75,22 @@ class LibraryAppTest {
         Assertions.assertNotNull(answer);
     }
 
+    @Test
+    void doChatWithMcp() {
+        String chatId = UUID.randomUUID().toString();
+        // 测试地图 MCP
+        String message = "图片中是东方明珠塔，请给我5公里内合适的拍照打卡地点";
+        String answer =  libraryApp.doChatWithMcp(message, chatId);
+    }
+
+    @Test
+    void doChatWithMcp_server() {
+        String chatId = UUID.randomUUID().toString();
+        // 测试图片搜索 MCP
+        String message = "帮我搜索一些群山的图片";
+        String answer =  libraryApp.doChatWithMcp(message, chatId);
+        Assertions.assertNotNull(answer);
+    }
+
 }
 
